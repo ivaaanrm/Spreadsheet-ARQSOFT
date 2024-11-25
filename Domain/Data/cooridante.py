@@ -37,4 +37,16 @@ class Coordinate:
         row = int(row_str)
         
         return Coordinate(row=row, column=column)
+    
+    @staticmethod
+    def number_to_letter(n: int) -> str:
+        """Convierte un número en su equivalente en letras (estilo columnas de Excel)."""
+        return "" if n <= 0 else Coordinate.number_to_letter((n - 1) // 26) + chr((n - 1) % 26 + 65)
 
+
+
+
+if __name__ == "__main__":
+    
+    letter = Coordinate.number_to_letter(1)
+    print(letter)
