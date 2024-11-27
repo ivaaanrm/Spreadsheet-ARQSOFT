@@ -57,7 +57,7 @@ class Spreadsheet:
         return df.fillna("")
 
     def __repr__(self) -> str:
-        return f"{self.to_dataframe()}\n\n{self.to_dataframe(True)}"
+        return f"{self.to_dataframe(True)}"
     
     
 
@@ -65,9 +65,14 @@ if __name__ == "__main__":
     
     sheet = Spreadsheet()
     
-    sheet['A1'] = "Hola"
-    sheet['B2'] = "100.00"
-    sheet['C3'] = "=B2+1"
+    sheet['A1'] = "Hola"           # Texto simple
+    sheet['A2'] = "Mundo"          # Texto simple
+    sheet['B1'] = "123"            # Número como cadena
+    sheet['B2'] = "100.00"         # Número decimal como cadena
+    sheet['C1'] = "=B1+10"         # Fórmula válida
+    sheet['C2'] = "=SUM(A1:A5)"    # Fórmula válida
+    sheet['D1'] = ""               # Celda vacía
+    sheet['D2'] = 100              # Número sin comillas
     
     print(sheet)
 

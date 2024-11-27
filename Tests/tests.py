@@ -20,22 +20,25 @@ class TestSpreadSheet(unittest.TestCase):
         print(type(self.sheet))
         self.assertIsInstance(self.sheet, Spreadsheet)
     
-    # def test_set_value(self):
-    #     self.sheet['a1'] = "Hola"
-    #     self.assertEqual(self.sheet['a1'].value, "Hola")
+    def test_set_value(self):
+        self.sheet['a1'] = "Hola"
+        self.assertEqual(self.sheet['a1'].value, "Hola")
     
-    # def test_update_value(self):
-    #     self.sheet['a1'] = "Hola"
-    #     self.assertEqual(self.sheet['a1'].value, "Hola")
-    #     self.sheet['a1'] = "adios"
-    #     self.assertEqual(self.sheet['a1'].value, "adios")
-        
-        
-    def test_formula_content(self):
+    def test_update_value(self):
+        self.sheet['a1'] = "Hola"
+        self.assertEqual(self.sheet['a1'].value, "Hola")
+        self.sheet['a1'] = "adios"
+        self.assertEqual(self.sheet['a1'].value, "adios")
+    
+    def test_tokenizer(self):
         self.sheet['a1'] = "=1+1"
+        self.sheet['a1'].content.get_value()
         
-        print(type(self.sheet['a1'].content))
-        self.assertIsInstance(self.sheet['a1'].content, FormulaContent)
+    # def test_formula_content(self):
+    #     self.sheet['a1'] = "=1+1"
+        
+    #     print(type(self.sheet['a1'].content))
+    #     self.assertIsInstance(self.sheet['a1'].content, FormulaContent)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
