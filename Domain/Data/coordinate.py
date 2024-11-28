@@ -20,11 +20,11 @@ class Coordinate:
     column: int
 
     @staticmethod
-    def from_string(cell_name: str) -> 'Coordinate':
+    def from_string(coord: str) -> 'Coordinate':
         # Use a regular expression to separate the letters and numbers
-        match = re.match(r"([A-Za-z]+)([0-9]+)", cell_name)
+        match = re.match(r"([A-Za-z]+)([0-9]+)", coord)
         if not match:
-            raise InvalidCoordinate(f"Invalid cell coordinate format: {cell_name}")
+            raise InvalidCoordinate(f"Invalid cell coordinate format: {coord}")
 
         column_str, row_str = match.groups()
         
