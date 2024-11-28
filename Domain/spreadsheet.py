@@ -10,7 +10,7 @@ from rich import print
 
 sys.path.append(str(Path(__file__).parent))
 
-from Data.cooridante import Coordinate
+from Data.coordinate import Coordinate
 from Data.cell import Cell
 from Exception.exceptions import InvalidCoordinate
 
