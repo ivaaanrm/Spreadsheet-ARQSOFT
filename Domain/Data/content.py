@@ -17,7 +17,7 @@ class ContentFactory:
     def get_content_type(text: str) -> Content:
         if ContentFactory.is_formula_content(text):  # Formula content (e.g., "=SUM(A1:A10)")
             return FormulaContent(text)  # Remove the "=" for processing
-        elif ContentFactory.is_numerical_conentn(text):  # Numerical content (e.g., "123.45")
+        elif ContentFactory.is_numerical_content(text):  # Numerical content (e.g., "123.45")
             return NumericalContent(float(text))
         return TextContent(text)
     
@@ -26,7 +26,7 @@ class ContentFactory:
         return text.startswith("=")
     
     @staticmethod
-    def is_numerical_conentn(text: str) -> bool:
+    def is_numerical_content(text: str) -> bool:
         return text.replace('.', '', 1).isdigit()
 
 
