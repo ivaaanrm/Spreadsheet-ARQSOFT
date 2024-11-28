@@ -40,7 +40,6 @@ class Spreadsheet:
         except InvalidCoordinate as e:
             print(f"Invalid coordinate: {e}")
 
-
     def to_dataframe(self, value: bool = False) -> pd.DataFrame:
         """ Show in terminal the Spreadsheet with excel format"""
         data = {}
@@ -58,11 +57,9 @@ class Spreadsheet:
 
     def __repr__(self) -> str:
         return f"{self.to_dataframe(True)}"
-    
-    
+ 
 
-if __name__ == "__main__":
-    
+if __name__ == "__main__":    
     sheet = Spreadsheet()
     
     sheet['A1'] = "Hola"           # Texto simple
@@ -77,7 +74,7 @@ if __name__ == "__main__":
     print(sheet)
 
         
-        
+    
         
         
         

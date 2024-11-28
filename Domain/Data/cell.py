@@ -9,7 +9,7 @@ class Cell:
     content: Content = field(init=False)
     
     def __init__(self, text: str = ""):
-        self.content = ContentFactory.create_content(str(text))
+        self.content = ContentFactory.get_content_type(str(text))
     
     @property
     def value(self):

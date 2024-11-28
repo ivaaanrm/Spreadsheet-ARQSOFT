@@ -14,7 +14,7 @@ class Content(ABC):
 class ContentFactory:
     """Factory class to create Content instances based on the input text."""
     @staticmethod
-    def create_content(text: str) -> Content:
+    def get_content_type(text: str) -> Content:
         if ContentFactory.is_formula_content(text):  # Formula content (e.g., "=SUM(A1:A10)")
             return FormulaContent(text)  # Remove the "=" for processing
         elif ContentFactory.is_numerical_conentn(text):  # Numerical content (e.g., "123.45")
