@@ -24,15 +24,18 @@ class Content(ABC):
     
     def set_spreadsheet(self, sheet: Spreadsheet):
         self.sheet = sheet
+        
+    def set_current_cell(self, coordinate: Coordinate):
+        self.current_cell = coordinate
 
 
 class ContentFactory:
     """Factory class to create Content instances based on the input text."""
     @staticmethod
     def get_content_type(text: str) -> Content:
-        if ContentFactory.is_formula_content(text):  # Formula content (e.g., "=SUM(A1:A10)")
+        if ContentFactory.is_formula_content(text):  # Formula content  "=SUM(A1:A10)"
             return FormulaContent(text) 
-        elif ContentFactory.is_numerical_content(text):  # Numerical content (e.g., "123.45")
+        elif ContentFactory.is_numerical_content(text):  # Numerical content "123.45"
             return NumericalContent(float(text))
         return TextContent(text)
     
@@ -47,10 +50,10 @@ class ContentFactory:
 
 class TextContent(Content):
     def __init__(self, text: str):
-        self.text = text
+        self.__text = text
 
     def get_value(self) -> str:
-        return self.text
+        return self.__text
 
     
     def __repr__(self):
@@ -82,15 +85,18 @@ class FormulaContent(Content):
             return e.ERROR_CODE
     
     def evaluate_formula(self):
+        self.__cells_used.add(self.current_cell)
         arguments = self.get_tokens()
         
         formula_expression = []
         
         for arg in arguments:
             cell = self.sheet[arg.value]
-      
+        
             # TODO: iterar por cada operador y devolver el valor sin los condicionales
             if cell is not None:
+                if cell.coordinate in self.__cells_used: raise CircularDependency
+                
                 formula_expression.append(str(cell.value))
             else:
                 formula_expression.append(arg.value)

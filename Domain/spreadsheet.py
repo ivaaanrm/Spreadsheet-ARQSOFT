@@ -17,25 +17,25 @@ from Exception.exceptions import InvalidCoordinate
 class Spreadsheet:
     def __init__(self) -> None:
         self.__cells: Dict[Coordinate, Cell] = {}
-        
+    
     def set_cell(self, coords: str, content: str):
         try:
             coord = Coordinate.from_string(coords)
-            self.__cells[coord] = Cell(content, self)
+            self.__cells[coord] = Cell(coord, content, self)
         except InvalidCoordinate as e:
             pass
 
     def __getitem__(self, cell_coords: str) -> Cell:
         try:
             coord = Coordinate.from_string(cell_coords)
-            return self.__cells.get(coord, Cell(sheet=self))
+            return self.__cells.get(coord, Cell(coords=coord, sheet=self))
         except InvalidCoordinate as e:
             return None
 
     def __setitem__(self, cell_coords: str, content: str) -> None:
         try:
             coord = Coordinate.from_string(cell_coords)
-            self.__cells[coord] = Cell(content, self)
+            self.__cells[coord] = Cell(coord, content, self)
         except InvalidCoordinate as e:
             pass
 
@@ -63,16 +63,19 @@ if __name__ == "__main__":
     
     sheet['A1'] = "=C1"            # Texto simple
     sheet['A2'] = "Mundo"          # Texto simple
-    sheet['B1'] = "123"            # Número como cadena
-    sheet['B2'] = "1.00.00"         # Número decimal como cadena
+    sheet['B1'] = "1"              # Número como cadena
+    sheet['B2'] = "1.00.00"        # Número decimal como cadena
     sheet['C1'] = "=B1+10"         # Fórmula válida
     sheet['C2'] = "=SUM(A1:A5)"    # Fórmula válida
     sheet['D1'] = ""               # Celda vacía
     sheet['D2'] = 100              # Número sin comillas
-    sheet['E1'] = "=B1"            # Número sin comillas
-    # sheet['E2'] = "=E2"            # Número sin comillas
+    sheet['F1'] = "=F1"
     
+    # TODO: Esto no funciona todavía
+    # sheet['E1'] = "=E2"           
+    # sheet['E2'] = "=E1"            
     
+    print(sheet['A1'] == sheet['C1'])
 
     print(sheet)
 
