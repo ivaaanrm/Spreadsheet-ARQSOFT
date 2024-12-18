@@ -1,11 +1,11 @@
 from __future__ import annotations
-import sys
 from abc import ABC, abstractmethod
-from typing import Any, TYPE_CHECKING, List
-from pathlib import Path
+from typing import TYPE_CHECKING, List
 
-# from .Formula.tokenizer import Tokenizer
-from openpyxl.formula.tokenizer import Tokenizer, Token
+from openpyxl.formula.tokenizer import Tokenizer as TokenizerOpenpyxl
+from openpyxl.formula.tokenizer import Token as TokenOpenpyxl
+
+from .Formula.tokenizer import Tokenizer, Token
 from Exception.exceptions import InvalidFormula, CircularDependency
 
 if TYPE_CHECKING:
@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 class Content(ABC):
     def __init__(self):
         self.sheet = None
+        self.content: str = None
     
     @abstractmethod
     def get_value(self) -> str:
@@ -50,31 +51,31 @@ class ContentFactory:
 
 class TextContent(Content):
     def __init__(self, text: str):
-        self.__text = text
+        self.content = text
 
     def get_value(self) -> str:
-        return self.__text
+        return self.content
 
-    
     def __repr__(self):
         return f"TextContent({self.text})"
 
 
 class NumericalContent(Content):
     def __init__(self, number: float):
-        self.__number = number
+        self.content = number
 
     def get_value(self) -> float:
-        return self.__number
-    
+        return self.content
+        
     def __repr__(self):
         return f"NumericalContent({self.__number})"
 
 
 class FormulaContent(Content):
     def __init__(self, expression: str):
-        self.__expression = expression        
-        self.__tokenizer = Tokenizer(self.__expression)
+        self.content = expression        
+        self.__tokenizer_openpyxl = TokenizerOpenpyxl(self.content)
+        self.__tokenizer = Tokenizer(self.content)
         self.__cells_used = set()
 
     def get_value(self) -> str:
@@ -87,15 +88,15 @@ class FormulaContent(Content):
     def evaluate_formula(self):
         self.__cells_used.add(self.current_cell)
         arguments = self.get_tokens()
-        
+
         formula_expression = []
         
         for arg in arguments:
             cell = self.sheet[arg.value]
-        
             # TODO: iterar por cada operador y devolver el valor sin los condicionales
             if cell is not None:
-                if cell.coordinate in self.__cells_used: raise CircularDependency
+                if cell.coordinate in self.__cells_used: 
+                    raise CircularDependency
                 
                 formula_expression.append(str(cell.value))
             else:
@@ -109,9 +110,9 @@ class FormulaContent(Content):
         return formula_value
                 
     
-    def get_tokens(self) -> List[Token]:
+    def get_tokens(self) -> List[TokenOpenpyxl]:
         # TODO: Implementar aqui el Tokenizer nuestro
-        return self.__tokenizer.items
+        return self.__tokenizer_openpyxl.items
     
     def __repr__(self):
-        return f"FormulaContnent({self.__expression=})"
+        return f"FormulaContnent({self.content=})"

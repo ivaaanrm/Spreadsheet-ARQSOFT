@@ -48,6 +48,9 @@ class Spreadsheet:
                 data[row] = {}
             data[row][col] = cell.value if value else cell.content
         
+        if not data:
+            return pd.DataFrame()
+        
         df = pd.DataFrame.from_dict(data, orient='index')
         df = df.reindex(sorted(df.columns), axis=1)  # Ordenar columnas
         
