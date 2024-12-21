@@ -2,11 +2,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, List
 
-from openpyxl.formula.tokenizer import Tokenizer as TokenizerOpenpyxl
-from openpyxl.formula.tokenizer import Token as TokenOpenpyxl
-
-from .Formula.tokenizer import Tokenizer, Token
 from Exception.exceptions import InvalidFormula, CircularDependency
+
+from .Formula.formula import FormulaController
 
 if TYPE_CHECKING:
     from spreadsheet import Spreadsheet
@@ -73,46 +71,16 @@ class NumericalContent(Content):
 
 class FormulaContent(Content):
     def __init__(self, expression: str):
-        self.content = expression        
-        self.__tokenizer_openpyxl = TokenizerOpenpyxl(self.content)
-        self.__tokenizer = Tokenizer(self.content)
+        self.content = expression
         self.__cells_used = set()
+        self.__formula = FormulaController(self.content, self.__cells_used)
 
     def get_value(self) -> str:
         try:    
-            return self.evaluate_formula()
+            return self.__formula.evaluate_formula(self.sheet, self.current_cell)
             # TODO: Para la dependencia circular guardar en un set la celda con las coordenadas donde se ejecuta la formula
         except Exception as e:
             return e.ERROR_CODE
-    
-    def evaluate_formula(self):
-        self.__cells_used.add(self.current_cell)
-        arguments = self.get_tokens()
 
-        formula_expression = []
-        
-        for arg in arguments:
-            cell = self.sheet[arg.value]
-            # TODO: iterar por cada operador y devolver el valor sin los condicionales
-            if cell is not None:
-                if cell.coordinate in self.__cells_used: 
-                    raise CircularDependency
-                
-                formula_expression.append(str(cell.value))
-            else:
-                formula_expression.append(arg.value)
-        
-        try:
-            formula_value = eval(''.join(formula_expression))
-        except: 
-            raise InvalidFormula
-        
-        return formula_value
-                
-    
-    def get_tokens(self) -> List[TokenOpenpyxl]:
-        # TODO: Implementar aqui el Tokenizer nuestro
-        return self.__tokenizer_openpyxl.items
-    
     def __repr__(self):
         return f"FormulaContnent({self.content=})"

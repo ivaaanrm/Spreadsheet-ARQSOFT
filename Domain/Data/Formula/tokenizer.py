@@ -25,7 +25,7 @@ class Token:
         return f"Token({self.value}, {self.token_type.value})"
 
 class Tokenizer:
-    OPERATORS = set(['+', '-', '*', '/', '^', '=', '>', '<', '>=', '<=', '<>', '&'])
+    OPERATORS = set(['+', '-', '*', '/', '='])
     PARENTHESES = set(['(', ')'])
     
     def __init__(self):
@@ -51,7 +51,7 @@ class Tokenizer:
     
     def _is_function(self, value: str) -> bool:
         # Basic check for function names (can be expanded)
-        common_functions = {'SUM', 'AVERAGE', 'COUNT', 'MAX', 'MIN', 'IF', 'VLOOKUP'}
+        common_functions = {'SUMA', 'PROMEDIO', 'MAX', 'MIN'}
         return value.upper() in common_functions
     
     def tokenize(self, formula: str) -> List[Token]:
@@ -160,7 +160,7 @@ class Tokenizer:
 
 if __name__ == "__main__":
     tokenizer = Tokenizer()
-    formula = "=SUM(A1:B2)+42.5*C1"
+    formula = "SUMA(A1:B2)+42.5*C1"
     tokens = tokenizer.tokenize(formula)
 
     for token in tokens:

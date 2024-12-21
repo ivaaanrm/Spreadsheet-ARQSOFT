@@ -73,6 +73,8 @@ if __name__ == "__main__":
     sheet['D1'] = ""               # Celda vacía
     sheet['D2'] = 100              # Número sin comillas
     sheet['F1'] = "=F1"
+    sheet['A5'] = "5"
+    sheet['F5'] = "=100/(A5+(A5*A5/5))"
     
     # TODO: Esto no funciona todavía
     # sheet['E1'] = "=E2"           
