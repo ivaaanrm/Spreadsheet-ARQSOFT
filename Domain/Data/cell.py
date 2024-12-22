@@ -24,12 +24,6 @@ class Cell:
     
     @property
     def content_str(self) -> str:
-        return self.content.content
-    
-    def __hash__(self):
-        return hash(self.content)    
-    
-    def __eq__(self, cell: Cell):
-        return self.value == cell.value
+        return str(self.content.content)
 
         

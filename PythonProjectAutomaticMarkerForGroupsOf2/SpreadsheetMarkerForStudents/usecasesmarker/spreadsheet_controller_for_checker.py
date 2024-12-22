@@ -4,14 +4,8 @@ from rich import print
 sys.path.append(str(Path(__file__).parent.parent.parent.parent))
 sys.path.append(str(Path(__file__).parent.parent))
 
-from SpreadsheetController import SpreadsheetController
-from Domain.spreadsheet import Spreadsheet
-
-
 class ISpreadsheetControllerForChecker:
-    
-    def __init__(self):
-        self.spreadsheet = Spreadsheet()
+
 
     ##@brief Tries to set the content of a cell of the spreadsheet in a certain coordinate. See complete specification below following the link.
     #
@@ -29,7 +23,9 @@ class ISpreadsheetControllerForChecker:
     # formula that introduces in the spreadsheet some circular dependency
 
     def set_cell_content(self, coord, str_content):
-        self.spreadsheet[coord] = str_content
+        raise NotImplementedError
+   
+            
 
     ##@brief Returns the value of the content of a cell as a float. See complete specification below following the link.
     #
@@ -46,7 +42,8 @@ class ISpreadsheetControllerForChecker:
     # representation of a number
 
     def get_cell_content_as_float(self, coord):
-        return self.spreadsheet[coord].value
+        raise NotImplementedError
+
 
     ##@brief Returns a string  version of the content of a cell.
     #
@@ -60,7 +57,7 @@ class ISpreadsheetControllerForChecker:
     # @exception BadCoordinateException if the cellCoord argument does not represent a proper spreadsheet coordinate
 
     def get_cell_content_as_string(self, coord):
-        return self.spreadsheet[coord].content.content
+        raise NotImplementedError
 
     ##@brief Returns the textual representation of the formula present in the cell whose coordiantes are represented by argument coord; the textual
     # representation of a formula MUST NOT INCLUDE THE '=' character, and there must not be any whitespace.
@@ -73,7 +70,7 @@ class ISpreadsheetControllerForChecker:
     # OR if the coord argument represents a legal coordinate BUT cell in this coordinate DOES NOT CONTAIN A FORMULA
 
     def get_cell_formula_expression(self, coord):
-        return self.spreadsheet[coord].content.content
+        raise NotImplementedError
 
     ##@brief Tries to save the spreadsheet into a file.
     #

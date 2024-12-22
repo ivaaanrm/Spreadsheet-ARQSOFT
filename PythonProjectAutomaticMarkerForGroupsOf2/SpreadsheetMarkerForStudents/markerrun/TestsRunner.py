@@ -22,8 +22,8 @@ class TestRunner:
             "markerrun.formula_content_test.FormulaContentTest", \
             "markerrun.dependent_cells_test.DependentCellsTest", \
             # "markerrun.circular_dependencies_test.CircularDependenciesTest", \
-            # "markerrun.save_test.SaveTest", \
-            # "markerrun.load_test.LoadTest" \
+            "markerrun.save_test.SaveTest", \
+            "markerrun.load_test.LoadTest" \
             ]
         self.porcentajes = [3,3,39,15,10,12.5,12.5]
         self.clasesAPorcentajes = {} #mapa <string (clase),float (porcentaje)>

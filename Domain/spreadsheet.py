@@ -59,7 +59,9 @@ class Spreadsheet:
 
     def __repr__(self) -> str:
         return f"{self.to_dataframe(True)}"
- 
+
+    def items(self):
+        return self.__cells.items()
 
 if __name__ == "__main__":    
     sheet = Spreadsheet()

@@ -19,8 +19,6 @@ class Options:
     SAVE_SPREADHSEET = "S"
     EXIT_PROGRAM = "X"
     
-
-
 class Menu:
     def __init__(self):
         self.options = {
@@ -60,25 +58,43 @@ class SpreadsheetController:
         self.file_loader = FileParser()
         self.menu = Menu()
         self.sheet: Spreadsheet = None
+
+    def set_cell_content(self, coord: str, str_content: str) -> None:
+        self.sheet[coord] = str_content
     
+    def get_cell_content_as_float(self, coord: str) -> float:
+        return self.sheet[coord].value
+        
+    def get_cell_content_as_string(self, coord: str) -> str:
+        return self.sheet[coord].content_str
+    
+    def get_cell_formula_expression(self, coord: str) -> str:
+        return self.sheet[coord].content_str
+        
+    def save_spreadsheet_to_file(self, s_name_in_user_dir: str) -> None:
+        self.file_saver.save(self.sheet, s_name_in_user_dir)
+    
+    def load_spreadsheet_from_file(self, s_name_in_user_dir: str) -> None:
+        self.sheet = self.file_loader.load(s_name_in_user_dir)
+
     def run(self) -> None:
         while True:
             choice, arguments = self.menu.get_choice()
             
             if choice == Options.EXECUTE_FILE_COMMANDS:
-                self.read_commands_from_file(*arguments)
+                self.__read_commands_from_file(*arguments)
                 
             elif choice == Options.NEW_SPREADSHEET: 
                 self.new_spreadsheet()
                 
             elif choice == Options.EDIT_CELL:
-                self.edit_cell(arguments)
+                self.set_cell_content(arguments)
                 
             elif choice == Options.LOAD_SPREADHSEET: 
-                self.sheet = self.load_spreadsheet(arguments)
+                self.sheet = self.load_spreadsheet_from_file(arguments)
                 
             elif choice == Options.SAVE_SPREADHSEET:
-                self.save_spreadsheet(arguments)
+                self.save_spreadsheet_to_file(arguments)
                 
             elif choice == Options.EXIT_PROGRAM:
                 print("Exiting program.")
@@ -86,8 +102,17 @@ class SpreadsheetController:
             
             print(self.sheet)
             print("\n")
+            
+    def new_spreadsheet(self) -> Spreadsheet:
+        """Funciión para generar un nuevo Spreadsheet vacio
+        
+        Returns:
+            Spreadsheet: Devuelve un spreadsheet vacio
+        """
+        self.sheet = Spreadsheet()
+        print("* Spreadhseet created!")
 
-    def read_commands_from_file(self, *args):
+    def __read_commands_from_file(self, *args):
         if not args:
             return None
             
@@ -103,51 +128,14 @@ class SpreadsheetController:
             parts = command.split()
             choice = parts[0]  # First part is the choice
             arguments = parts[1:] if len(parts) > 1 else []  # Remaining parts are arguments
-            
-            
-            
-
-    def edit_cell(self, arguments: List[str]):
-        """Función para añadir una nueva celda
-
-        Args:
-            arguments (List[str]): argumentos que definen la coordenada y el contenido
-        """
-        cell_coords, cell_content = arguments
-        self.sheet[cell_coords] = cell_content
-            
-    def new_spreadsheet(self) -> Spreadsheet:
-        """Funciión para generar un nuevo Spreadsheet vacio
-
-        Returns:
-            Spreadsheet: Devuelve un spreadsheet vacio
-        """
-        self.sheet = Spreadsheet()
-        print("* Spreadhseet created!")
-    
-    def save_spreadsheet(self, arguments: List[str]) -> None:
-        """Función para guardar un spreadsheet en un archivo
-
-        Args:
-            sheet (Spreadsheet): _description_
-            path (str): _description_
-        """
-        return NotImplementedError
-        
-    def load_spreadsheet(self, arguments: List[str]) -> Spreadsheet:
-        """Función para cargar un  spreadsheet de un archivo
-
-        Args:
-            path (str): _description_
-
-        Returns:
-            Spreadsheet: _description_
-        """
-        return NotImplementedError
     
     
 if __name__ == "__main__":
     controller = SpreadsheetController()
-    controller.run()
-
+    # controller.run()
+    
+    ref_path = r"/Users/ivan/Desktop/Projects-pro/Spreadsheet-ARQSOFT/PythonProjectAutomaticMarkerForGroupsOf2/SpreadsheetMarkerForStudents/markerrun/marker_save_test_ref.s2v"
+    controller.load_spreadsheet_from_file(ref_path)
+    save_path = "/Users/ivan/Desktop/Projects-pro/Spreadsheet-ARQSOFT/Tests/test.s2v"
+    controller.save_spreadsheet_to_file(save_path)
 

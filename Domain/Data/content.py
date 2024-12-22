@@ -35,7 +35,10 @@ class ContentFactory:
         if ContentFactory.is_formula_content(text):  # Formula content  "=SUM(A1:A10)"
             return FormulaContent(text) 
         elif ContentFactory.is_numerical_content(text):  # Numerical content "123.45"
-            return NumericalContent(float(text))
+            if '.' in text:
+                return NumericalContent(float(text))
+            else:
+                return NumericalContent(int(text))
         return TextContent(text)
     
     @staticmethod
@@ -55,7 +58,7 @@ class TextContent(Content):
         return self.content
 
     def __repr__(self):
-        return f"TextContent({self.text})"
+        return f"TextContent({self.content})"
 
 
 class NumericalContent(Content):
@@ -66,7 +69,7 @@ class NumericalContent(Content):
         return self.content
         
     def __repr__(self):
-        return f"NumericalContent({self.__number})"
+        return f"NumericalContent({self.content})"
 
 
 class FormulaContent(Content):
@@ -78,7 +81,6 @@ class FormulaContent(Content):
     def get_value(self) -> str:
         try:    
             return self.__formula.evaluate_formula(self.sheet, self.current_cell)
-            # TODO: Para la dependencia circular guardar en un set la celda con las coordenadas donde se ejecuta la formula
         except Exception as e:
             return e.ERROR_CODE
 

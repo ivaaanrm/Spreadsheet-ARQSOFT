@@ -4,6 +4,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent.parent))
 sys.path.append(str(Path(__file__).parent.parent))
 
 from usecasesmarker.spreadsheet_controller_for_checker import ISpreadsheetControllerForChecker
+from SpreadsheetController import SpreadsheetController
 
 class SpreadSheetFactoryForChecker:
 
@@ -18,7 +19,9 @@ class SpreadSheetFactoryForChecker:
 
     def create_spreadsheet_controller() -> ISpreadsheetControllerForChecker:
         
-        return ISpreadsheetControllerForChecker()
+        controller = SpreadsheetController()
+        controller.new_spreadsheet()
+        return controller
         
         raise Exception("SpreadsheetFactoryForChecker::" \
                         + "create_spreadsheet_controller(). You MUST implement the code of " \
