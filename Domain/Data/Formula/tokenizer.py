@@ -25,7 +25,7 @@ class Token:
         return f"Token({self.value}, {self.token_type.value})"
 
 class Tokenizer:
-    OPERATORS = set(['+', '-', '*', '/', '='])
+    OPERATORS = set(['+', '-', '*', '/'])
     PARENTHESES = set(['(', ')'])
     
     def __init__(self):
@@ -56,6 +56,7 @@ class Tokenizer:
     
     def tokenize(self, formula: str) -> List[Token]:
         self.formula = formula.strip()
+        self.formula = self.formula.lstrip("=")
         self.current_pos = 0
         self.tokens = []
         
@@ -130,13 +131,26 @@ class Tokenizer:
             self.current_pos += 1
         
         value = self.formula[start_pos:self.current_pos]
-        
-        if self._is_range(value):
+        if self._is_function(value) and self.current_pos < len(self.formula) and self.formula[self.current_pos] == '(':
+            # Handle function with arguments, e.g., SUMA(A1:B2)
+            start_pos = self.current_pos - len(value)
+            paren_count = 1
+            self.current_pos += 1
+            
+            while self.current_pos < len(self.formula) and paren_count > 0:
+                if self.formula[self.current_pos] == '(':
+                    paren_count += 1
+                elif self.formula[self.current_pos] == ')':
+                    paren_count -= 1
+                self.current_pos += 1
+            
+            value = self.formula[start_pos:self.current_pos]
+            token_type = OperandType.FUNCTION
+
+        elif self._is_range(value):
             token_type = OperandType.RANGE
         elif self._is_cell_reference(value):
             token_type = OperandType.CELL_REF
-        elif self._is_function(value):
-            token_type = OperandType.FUNCTION
         else:
             raise ValueError(f"Invalid identifier: {value}")
         
@@ -160,8 +174,9 @@ class Tokenizer:
 
 if __name__ == "__main__":
     tokenizer = Tokenizer()
-    formula = "SUMA(A1:B2)+42.5*C1"
+    #formula = "=D1 + SUMA(A1:B2)"
+    formula = "=SUMA(4;5;A1:B2)+42.5*C1 + PROMEDIO(A1:B2;4;5)"
     tokens = tokenizer.tokenize(formula)
 
     for token in tokens:
-        print(token)
+        print(token.value)

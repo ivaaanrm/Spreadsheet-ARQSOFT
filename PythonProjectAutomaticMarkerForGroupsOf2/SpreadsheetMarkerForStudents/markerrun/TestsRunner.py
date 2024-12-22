@@ -20,7 +20,7 @@ class TestRunner:
             "markerrun.text_content_test.TextContentTest", \
             "markerrun.number_content_test.NumberContentTest", \
             "markerrun.formula_content_test.FormulaContentTest", \
-            # "markerrun.dependent_cells_test.DependentCellsTest", \
+            "markerrun.dependent_cells_test.DependentCellsTest", \
             # "markerrun.circular_dependencies_test.CircularDependenciesTest", \
             # "markerrun.save_test.SaveTest", \
             # "markerrun.load_test.LoadTest" \

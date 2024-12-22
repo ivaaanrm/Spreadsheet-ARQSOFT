@@ -64,23 +64,30 @@ class Spreadsheet:
 if __name__ == "__main__":    
     sheet = Spreadsheet()
     
-    sheet['A1'] = "=C1"            # Texto simple
+    sheet['A1'] = "=D2"            # Texto simple
     sheet['A2'] = "Mundo"          # Texto simple
     sheet['B1'] = "1"              # Número como cadena
     sheet['B2'] = "1.00.00"        # Número decimal como cadena
     sheet['C1'] = "=B1+10"         # Fórmula válida
-    sheet['C2'] = "=SUM(A1:A5)"    # Fórmula válida
     sheet['D1'] = ""               # Celda vacía
     sheet['D2'] = 100              # Número sin comillas
     sheet['F1'] = "=F1"
-    sheet['A5'] = "5"
-    sheet['F5'] = "=100/(A5+(A5*A5/5))"
+    sheet['A3'] = "5"
+    sheet['F3'] = "=100/(A3+(A3*A3/5))"
+
+    #! Testing functions:
+    sheet['A5'] = 1
+    sheet['B5'] = "10"
+    sheet['A6'] = "100"
+    sheet['B6'] = 1000
+    sheet['C7'] = "=A5+B5+A6+B6"
+    sheet['C8'] = "=SUMA(A5:B6;D2;5;MIN(A5:B6;D2;5);1)"
     
     # TODO: Esto no funciona todavía
     # sheet['E1'] = "=E2"           
     # sheet['E2'] = "=E1"            
     
-    print(sheet['A1'] == sheet['C1'])
+    #print(sheet['A1'] == sheet['C1'])
 
     print(sheet)
 

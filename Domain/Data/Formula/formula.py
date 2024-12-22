@@ -1,11 +1,10 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, List
-
-from openpyxl.formula.tokenizer import Tokenizer as TokenizerOpenpyxl
-from openpyxl.formula.tokenizer import Token as TokenOpenpyxl
+import re
 
 from Exception.exceptions import InvalidFormula, CircularDependency
+from Data.coordinate import Coordinate
 
 from .tokenizer import Tokenizer, Token
 
@@ -18,12 +17,11 @@ class FormulaController:
     def __init__(self, formula, cells_used):
         self.formula = formula
         self.__cells_used = cells_used
-        self.__tokenizer = TokenizerOpenpyxl(self.formula)
-        #self.__tokenizer = Tokenizer(self.formula)
+        self.__tokenizer = Tokenizer()
 
     def evaluate_formula(self, sheet: Spreadsheet, current_cell: Cell):
         self.__cells_used.add(current_cell)
-        arguments = self.get_tokens()
+        arguments = self.get_tokens(self.formula)
 
         formula_expression = []
         
@@ -33,8 +31,24 @@ class FormulaController:
             if cell is not None:
                 if cell.coordinate in self.__cells_used: 
                     raise CircularDependency
-                
                 formula_expression.append(str(cell.value))
+
+            elif arg.value.startswith("SUMA"):
+                values = []
+                value = self.evaluate_function("SUMA", arg.value, sheet, values)
+                formula_expression.append(str(value))
+            elif arg.value.startswith("MIN"):
+                values = []
+                value = self.evaluate_function("MIN", arg.value, sheet, values)
+                formula_expression.append(str(value))
+            elif arg.value.startswith("MAX"):
+                values = []
+                value = self.evaluate_function("MAX", arg.value, sheet, values)
+                formula_expression.append(str(value))
+            elif arg.value.startswith("PROMEDIO"):
+                values = []
+                value = self.evaluate_function("PROMEDIO", arg.value, sheet, values)
+                formula_expression.append(str(value))
             else:
                 formula_expression.append(arg.value)
         
@@ -44,7 +58,57 @@ class FormulaController:
             raise InvalidFormula
         
         return formula_value
+    
+    def evaluate_function(self, fname: str , formula: str, sheet: Spreadsheet, values):
+        match = r"" + fname + "\((.*)\)"
 
-    def get_tokens(self) -> List[TokenOpenpyxl]:
-        # TODO: Implementar aqui el Tokenizer nuestro
-        return self.__tokenizer.items
+        if not match:
+            raise InvalidFormula
+    
+        sequence = re.search(match, formula).group(1)
+        arguments = []
+        paren_count = 0
+        start_idx = 0
+        
+        for i, char in enumerate(sequence):
+            if char == '(':
+                paren_count += 1
+            elif char == ')':
+                paren_count -= 1
+            elif char == ';' and paren_count == 0:
+                arguments.append(sequence[start_idx:i].strip())
+                start_idx = i + 1
+        
+        arguments.append(sequence[start_idx:].strip())
+
+        for arg in arguments:
+            if '(' in arg:
+                index = arg.find('(')
+                fname2 = arg[:index]
+                value = self.evaluate_function(fname2, arg, sheet, [])
+                values.append(value)
+            elif ':' in arg:
+                range = Coordinate.get_coordinates_in_range(arg)
+                for coord in range:
+                    column = Coordinate.number_to_letter(coord.column)
+                    cell = column + str(coord.row)
+                    values.append(sheet[cell].value)
+            else:
+                cell = sheet[arg]
+                if cell is not None:
+                    values.append(float(cell.value))
+                else:
+                    values.append(float(arg))
+
+        if fname == 'SUMA':
+            return sum(values)
+        elif fname == 'MIN':
+            return min(values)
+        elif fname == 'MAX':
+            return max(values)
+        elif fname == 'PROMEDIO':
+            return sum(values) / len(values)
+    
+    def get_tokens(self, formula):
+        tokens = self.__tokenizer.tokenize(formula)
+        return tokens
