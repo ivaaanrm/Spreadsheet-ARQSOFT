@@ -61,6 +61,7 @@ class SpreadsheetController:
 
     def set_cell_content(self, coord: str, str_content: str) -> None:
         self.sheet[coord] = str_content
+        a = self.get_cell_content_as_float(coord)
     
     def get_cell_content_as_float(self, coord: str) -> float:
         return self.sheet[coord].value
@@ -133,9 +134,16 @@ class SpreadsheetController:
 if __name__ == "__main__":
     controller = SpreadsheetController()
     # controller.run()
-    
+    '''
     ref_path = r"/Users/ivan/Desktop/Projects-pro/Spreadsheet-ARQSOFT/PythonProjectAutomaticMarkerForGroupsOf2/SpreadsheetMarkerForStudents/markerrun/marker_save_test_ref.s2v"
     controller.load_spreadsheet_from_file(ref_path)
     save_path = "/Users/ivan/Desktop/Projects-pro/Spreadsheet-ARQSOFT/Tests/test.s2v"
     controller.save_spreadsheet_to_file(save_path)
+    '''
+    controller.new_spreadsheet()
+    controller.set_cell_content("A2","5")
+    controller.set_cell_content("A11","=A2+A2")
+    controller.set_cell_content("I1", "=(A5*4)/(A2+A2)+SUMA(A1;A2;3;4;5;A6:A12)")
+    #controller.get_cell_content_as_float("A11")
+    print(controller.get_cell_content_as_float("I1"))
 

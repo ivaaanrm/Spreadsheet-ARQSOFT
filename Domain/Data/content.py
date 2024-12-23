@@ -79,10 +79,8 @@ class FormulaContent(Content):
         self.__formula = FormulaController(self.content, self.__cells_used)
 
     def get_value(self) -> str:
-        try:    
-            return self.__formula.evaluate_formula(self.sheet, self.current_cell)
-        except Exception as e:
-            return e.ERROR_CODE
+        return self.__formula.evaluate_formula(self.sheet, self.current_cell)
+
 
     def __repr__(self):
         return f"FormulaContnent({self.content=})"
