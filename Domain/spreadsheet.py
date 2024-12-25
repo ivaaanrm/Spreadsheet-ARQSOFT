@@ -56,18 +56,20 @@ class Spreadsheet:
         df.columns = [Coordinate.number_to_letter(col) for col in df.columns]  # Ajustar col a base 1
         return df.fillna("")
 
+    def get(self, coord: Coordinate) -> Cell:
+        return self.__cells.get(coord, Cell(coord, "", self))
 
 if __name__ == "__main__":    
     sheet = Spreadsheet()
-    '''
-    sheet['F1'] = "=D2"            # Texto simple
-    sheet['F2'] = "Mundo"          # Texto simple
-    sheet['G1'] = "1"              # Número como cadena
-    sheet['G2'] = "1.00.00"        # Número decimal como cadena
-    sheet['C1'] = "=G1+10"         # Fórmula válida
-    sheet['D1'] = ""               # Celda vacía
-    sheet['D2'] = 100              # Número sin comillas
-    sheet['F3'] = "5"
+    
+    # sheet['F1'] = "=D2"            # Texto simple
+    # sheet['F2'] = "Mundo"          # Texto simple
+    # sheet['G1'] = "1"              # Número como cadena
+    # sheet['G2'] = "1.00.00"        # Número decimal como cadena
+    # sheet['C1'] = "=G1+10"         # Fórmula válida
+    # sheet['D1'] = ""               # Celda vacía
+    # sheet['D2'] = 100              # Número sin comillas
+    # sheet['F3'] = "5"
 
     #! Testing functions:
     sheet['C5'] = 1
@@ -75,40 +77,41 @@ if __name__ == "__main__":
     sheet['C6'] = "100"
     sheet['D6'] = 1000
     sheet['C7'] = "=C5+D5+C6+D6"
-    
+    res = sheet['C7'].value
+    print(res)
     sheet['C8'] = "=SUMA(C5:D6;D2;5;MIN(C5:D6;D2;5);1)"
-    '''
+    print(sheet['C8'].value)
     #! Testing circular_dependencies:
-    sheet['E1'] = 20
-    sheet['E1'] = "=E1"
+    # sheet['E1'] = 20
+    # sheet['E1'] = "=E1"
 
-    sheet['E2'] = "=E3"
-    sheet['E3'] = "=E2"
-    sheet['E4'] = "=E4"
-    sheet['E5'] = 20
+    # sheet['E2'] = "=E3"
+    # sheet['E3'] = "=E2"
+    # sheet['E4'] = "=E4"
+    # sheet['E5'] = 20
 
     
-    sheet['A6'] = "1"
-    sheet['A7'] = "2"
-    sheet['A8'] = "3"
-    sheet['A9'] = "4"
-    sheet['A10'] = "5"
-    sheet['A11'] = "6"
-    sheet['A12'] = "7"
-    sheet['A13'] = "8"
-    sheet['A14'] = "9"
-    sheet['A1'] = "=A2+A3+A4+A5"
-    sheet['A2'] = "=A6+A7+A8"
-    sheet['A3'] = "=A9+A10+A11"
-    sheet['A4'] = "=A12+A13"
-    sheet['A5'] = "=A14+1"
+    # sheet['A6'] = "1"
+    # sheet['A7'] = "2"
+    # sheet['A8'] = "3"
+    # sheet['A9'] = "4"
+    # sheet['A10'] = "5"
+    # sheet['A11'] = "6"
+    # sheet['A12'] = "7"
+    # sheet['A13'] = "8"
+    # sheet['A14'] = "9"
+    # sheet['A1'] = "=A2+A3+A4+A5"
+    # sheet['A2'] = "=A6+A7+A8"
+    # sheet['A3'] = "=A9+A10+A11"
+    # sheet['A4'] = "=A12+A13"
+    # sheet['A5'] = "=A14+1"
 
-    sheet["A2"] = "=A1+A7+A8"
-    sheet["A11"] = "=A2+A5"
-    sheet["A11"] = "=A1+A5"
-    sheet["A6"] = "=A1+A5"
+    # sheet["A2"] = "=A1+A7+A8"
+    # sheet["A11"] = "=A2+A5"
+    # sheet["A11"] = "=A1+A5"
+    # sheet["A6"] = "=A1+A5"
     
-    print(sheet)
+    # print(sheet)
         
     
         

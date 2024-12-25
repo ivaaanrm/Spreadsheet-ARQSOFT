@@ -134,12 +134,7 @@ class SpreadsheetController:
 if __name__ == "__main__":
     controller = SpreadsheetController()
     # controller.run()
-    '''
-    ref_path = r"/Users/ivan/Desktop/Projects-pro/Spreadsheet-ARQSOFT/PythonProjectAutomaticMarkerForGroupsOf2/SpreadsheetMarkerForStudents/markerrun/marker_save_test_ref.s2v"
-    controller.load_spreadsheet_from_file(ref_path)
-    save_path = "/Users/ivan/Desktop/Projects-pro/Spreadsheet-ARQSOFT/Tests/test.s2v"
-    controller.save_spreadsheet_to_file(save_path)
-    '''
+
     controller.new_spreadsheet()
     controller.set_cell_content("A2","5")
     controller.set_cell_content("A11","=A2+A2")

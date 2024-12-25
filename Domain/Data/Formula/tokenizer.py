@@ -13,6 +13,14 @@ class OperandType(Enum):
     FUNCTION = "FUNCTION"
     STRING = "STRING"
 
+class FunctionType:
+    SUMA = "SUMA"
+    PROMEDIO = "PROMEDIO"
+    MAX = "MAX"
+    MIN = "MIN"
+    
+FUNCTIONS_AVAILABLE = {FunctionType.SUMA, FunctionType.PROMEDIO, FunctionType.MAX, FunctionType.MIN}
+
 class Token:
     def __init__(self, value: str, token_type: TokenType, operand_type: Optional[OperandType] = None):
         self.value = value
@@ -50,9 +58,7 @@ class Tokenizer:
             return False
     
     def _is_function(self, value: str) -> bool:
-        # Basic check for function names (can be expanded)
-        common_functions = {'SUMA', 'PROMEDIO', 'MAX', 'MIN'}
-        return value.upper() in common_functions
+        return value.upper() in FUNCTIONS_AVAILABLE
     
     def tokenize(self, formula: str) -> List[Token]:
         self.formula = formula.strip()
