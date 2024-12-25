@@ -2,6 +2,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, List
 import re
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+
+from PythonProjectAutomaticMarkerForGroupsOf2.SpreadsheetMarkerForStudents.entities.circular_dependency_exception import CircularDependencyException
 
 from Exception.exceptions import InvalidFormula, CircularDependency
 from Data.coordinate import Coordinate
@@ -20,7 +25,11 @@ class FormulaController:
         self.__tokenizer = Tokenizer()
 
     def evaluate_formula(self, sheet: Spreadsheet, current_cell: Cell):
+        if current_cell in self.__cells_used: 
+            raise CircularDependencyException(f'Circular dependency:{self.formula}')
+        
         self.__cells_used.add(current_cell)
+
         arguments = self.get_tokens(self.formula)
 
         formula_expression = []
@@ -29,8 +38,11 @@ class FormulaController:
             cell = sheet[arg.value]
             # TODO: iterar por cada operador y devolver el valor sin los condicionales
             if cell is not None:
-                if cell.coordinate in self.__cells_used: 
-                    raise CircularDependency
+                if cell.content.content == '':
+                    cell.content.content = "0"
+
+                if cell.coordinate in self.__cells_used:
+                    raise CircularDependencyException
                 formula_expression.append(str(cell.value))
 
             elif arg.value.startswith("SUMA"):
@@ -56,6 +68,8 @@ class FormulaController:
             formula_value = eval(''.join(formula_expression))
         except: 
             raise InvalidFormula
+        
+        self.__cells_used.remove(current_cell)
         
         return formula_value
     

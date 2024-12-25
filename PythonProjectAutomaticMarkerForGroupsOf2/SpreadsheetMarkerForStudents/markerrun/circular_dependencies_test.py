@@ -1,7 +1,12 @@
 import traceback
 from markerrun.ClasesCorrector import SuperClassForTests
 from usecasesmarker.spread_sheet_factory_for_checker import SpreadSheetFactoryForChecker
-from entities.circular_dependency_exception import CircularDependencyException
+#from entities.circular_dependency_exception import CircularDependencyException
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+
+from PythonProjectAutomaticMarkerForGroupsOf2.SpreadsheetMarkerForStudents.entities.circular_dependency_exception import CircularDependencyException
 
 
 class CircularDependenciesTest(SuperClassForTests):
