@@ -18,13 +18,6 @@ class Spreadsheet:
     def __init__(self) -> None:
         self.__cells: Dict[Coordinate, Cell] = {}
     
-    def set_cell(self, coords: str, content: str):
-        try:
-            coord = Coordinate.from_string(coords)
-            self.__cells[coord] = Cell(coord, content, self)
-        except InvalidCoordinate as e:
-            pass
-
     def __getitem__(self, cell_coords: str) -> Cell:
         try:
             coord = Coordinate.from_string(cell_coords)
@@ -38,6 +31,12 @@ class Spreadsheet:
             self.__cells[coord] = Cell(coord, content, self)
         except InvalidCoordinate as e:
             pass
+
+    def __repr__(self) -> str:
+        return f"{self.to_dataframe(True)}"
+
+    def items(self):
+        return self.__cells.items()
 
     def to_dataframe(self, value: bool = False) -> pd.DataFrame:
         """ Show in terminal the Spreadsheet with excel format"""
@@ -57,11 +56,6 @@ class Spreadsheet:
         df.columns = [Coordinate.number_to_letter(col) for col in df.columns]  # Ajustar col a base 1
         return df.fillna("")
 
-    def __repr__(self) -> str:
-        return f"{self.to_dataframe(True)}"
-
-    def items(self):
-        return self.__cells.items()
 
 if __name__ == "__main__":    
     sheet = Spreadsheet()
