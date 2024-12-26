@@ -83,4 +83,4 @@ class FormulaContent(Content):
 
 
     def __repr__(self):
-        return f"FormulaContnent({self.content=})"
+        return f"FormulaContnent({self.content})"

@@ -82,7 +82,10 @@ class FormulaController:
             elif arg.operand_type == OperandType.FUNCTION:
                 values = []
                 function_name = arg.value[:arg.value.find('(')]
-                value = self.evaluate_function(function_name, arg.value, sheet, values)
+                try:
+                    value = self.evaluate_function(function_name, arg.value, sheet, values)
+                except Exception as e:
+                    raise InvalidFormula(f"Invalid formula: {self.formula}")
                 formula_expression.append(str(value))
                 
             else:

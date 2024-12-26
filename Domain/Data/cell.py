@@ -6,6 +6,7 @@ if TYPE_CHECKING:
 
 from .content import ContentFactory
 from .coordinate import Coordinate
+from Domain.Exception.exceptions import InvalidFormula
 
 class Cell:    
     def __init__(self, 
@@ -17,10 +18,16 @@ class Cell:
         self.content = ContentFactory.get_content_type(str(text))
         self.content.set_spreadsheet(sheet)
         self.content.set_current_cell(self.coordinate)
+        # err = self.value
     
     @property
     def value(self) -> str:
-        return self.content.get_value()
+        try:
+            return self.content.get_value()
+        except InvalidFormula as e:
+            return e.ERROR_CODE
+        except Exception as e:
+            raise e
     
     @property
     def content_str(self) -> str:

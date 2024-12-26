@@ -33,7 +33,7 @@ class Spreadsheet:
             pass
 
     def __repr__(self) -> str:
-        return f"{self.to_dataframe(True)}"
+        return f"### Spreadsheet ###\n{self.to_dataframe(True)}\n\n### Content ###\n{self.to_dataframe()}\n"
 
     def items(self):
         return self.__cells.items()
@@ -54,6 +54,7 @@ class Spreadsheet:
         df = df.reindex(sorted(df.columns), axis=1)  # Ordenar columnas
         
         df.columns = [Coordinate.number_to_letter(col) for col in df.columns]  # Ajustar col a base 1
+        df.sort_index(inplace=True)  # Ordenar filas
         return df.fillna("")
 
     def get(self, coord: Coordinate) -> Cell:
@@ -72,15 +73,17 @@ if __name__ == "__main__":
     # sheet['F3'] = "5"
 
     #! Testing functions:
-    sheet['C5'] = 1
-    sheet['D5'] = "10"
-    sheet['C6'] = "100"
+    sheet['C5'] = "=D5"
+    sheet['D5'] = "=C6"
+    sheet['C6'] = "=C1"
     sheet['D6'] = 1000
-    sheet['C7'] = "=C5+D5+C6+D6"
-    res = sheet['C7'].value
-    print(res)
-    sheet['C8'] = "=SUMA(C5:D6;D2;5;MIN(C5:D6;D2;5);1)"
-    print(sheet['C8'].value)
+    
+    print(sheet)
+    # sheet['C7'] = "=C5+D5+C6+D6"
+    # res = sheet['C7'].value
+    # print(res)
+    # sheet['C8'] = "=SUMA(C5:D6;D2;5;MIN(C5:D6;D2;5);1)"
+    # print(sheet['C8'].value)
     #! Testing circular_dependencies:
     # sheet['E1'] = 20
     # sheet['E1'] = "=E1"
