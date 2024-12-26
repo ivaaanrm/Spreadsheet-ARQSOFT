@@ -8,9 +8,9 @@ COMMAND_LINE_INTERFACE = True
 
 class Program:
     def __init__(self):
-        self.controller = SpreadsheetController()
-        self.terminal = Terminal(self.controller)
-        self.ui = UI(self.controller)
+        self.__controller = SpreadsheetController()
+        self.terminal = Terminal(self.__controller)
+        self.ui = UI(self.__controller)
         
     def start(self):
         if COMMAND_LINE_INTERFACE:

@@ -1,5 +1,5 @@
 
-from Interfaces.CommandInterface import Interface
+from Interfaces.CommandInterface import UserInterface
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 import string
 
-class UI(Interface):
+class UI(UserInterface):
     def __init__(self, controller: 'SpreadsheetController'):
         self.controller = controller
         self.controller.new_spreadsheet()

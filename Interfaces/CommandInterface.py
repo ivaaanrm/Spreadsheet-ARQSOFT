@@ -15,7 +15,7 @@ class Options:
     
 class Menu:
     def __init__(self):
-        self.options = {
+        self.__options = {
             Options.EXECUTE_FILE_COMMANDS: "Read commands from File",
             Options.NEW_SPREADSHEET: "Create a New Spreadsheet",
             Options.EDIT_CELL: "Edit a cell",
@@ -27,7 +27,7 @@ class Menu:
     def display(self) -> None:
         """Displays the menu options."""
         print("Menu:")
-        for key, value in self.options.items():
+        for key, value in self.__options.items():
             print(f"{key}: {value}")
 
 
@@ -38,20 +38,19 @@ class Menu:
         parts = user_input.split()
         choice = parts[0].upper()  # First part is the choice
         arguments = parts[1:] if len(parts) > 1 else []  # Remaining parts are arguments
-        if choice in self.options:
+        if choice in self.__options:
             return choice, arguments
 
         else:
             print("Invalid choice. Please try again.")
             return self.get_choice()
 
-
-class Interface(ABC):
+class UserInterface(ABC):
     @abstractmethod
     def run(self) -> None:
         pass
     
-class Terminal(Interface):
+class Terminal(UserInterface):
     def __init__(self, controller: 'SpreadsheetController') -> None:
         self.menu = Menu()
         self.controller = controller

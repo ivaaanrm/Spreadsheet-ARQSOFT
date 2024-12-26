@@ -77,8 +77,8 @@ class CircularDependenciesTest(SuperClassForTests):
                                        + " should contain the value: 6 -result of formula =A6+A7+A8, when A6=1, A7=2, and A8=3- Instead, it contains the value " + str(content))
             to_throw=self.toThrow(error,to_throw)
             try:
-                # self.instance.set_cell_content("A2","=A1+A7+A8")
-                raise CircularDependencyException("Error")
+                self.instance.set_cell_content("A2","=A1+A7+A8")
+                # raise CircularDependencyException("Error")
                 content = self.instance.get_cell_content_as_float("B1")
                 error = self.sAssertTrue(False,0,"Cell A1 contains the formula =A2+A3+A4+A5, and now a try has been done to " \
                                          +"set cell A2 to =A1+A7+A8. This introduces a direct circular dependency that your program should have detected and the " \

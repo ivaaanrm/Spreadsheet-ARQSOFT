@@ -1,13 +1,6 @@
-import os
-from pathlib import Path
-from typing import List, Tuple
-
 from Domain.FileHandler.fileSaver import FileSaver
 from Domain.FileHandler.fileParser import FileParser
-
 from Domain.spreadsheet import Spreadsheet
-from Interfaces.CommandInterface import Options, Menu
-
 
 class SpreadsheetController:
     def __init__(self):
@@ -16,17 +9,17 @@ class SpreadsheetController:
         self.sheet: Spreadsheet = None
 
     def new_spreadsheet(self) -> Spreadsheet:
-        """Funciión para generar un nuevo Spreadsheet vacio
-        
-        Returns:
-            Spreadsheet: Devuelve un spreadsheet vacio
-        """
         self.sheet = Spreadsheet()
         print("* Spreadhseet created!")
 
     def set_cell_content(self, coord: str, str_content: str) -> None:
+        prev_contnet = self.get_cell_content_as_string(coord)
         self.sheet[coord] = str_content
-        a = self.get_cell_content_as_float(coord)
+        try:
+            a = self.get_cell_content_as_float(coord)
+        except Exception as e:
+            self.sheet[coord] = prev_contnet
+            raise e
     
     def get_cell_content_as_float(self, coord: str) -> float:
         return self.sheet[coord].value
@@ -42,6 +35,4 @@ class SpreadsheetController:
     
     def load_spreadsheet_from_file(self, s_name_in_user_dir: str) -> None:
         self.sheet = self.file_loader.load(s_name_in_user_dir)
-
- 
 
