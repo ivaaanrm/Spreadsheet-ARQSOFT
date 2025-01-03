@@ -9,16 +9,15 @@ COMMAND_LINE_INTERFACE = True
 class Program:
     def __init__(self):
         self.__controller = SpreadsheetController()
-        self.terminal = Terminal(self.__controller)
-        self.ui = UI(self.__controller)
         
     def start(self):
         if COMMAND_LINE_INTERFACE:
+            self.terminal = Terminal(self.__controller)
             self.terminal.run()
         else:
+            self.ui = UI(self.__controller)
             self.ui.run()
         
-
 if __name__ == "__main__":
     Program().start()
     
