@@ -1,6 +1,31 @@
 # Spreadsheet-ARQSOFT
 
-### 1. Instructions
+## 1. Instructions for running the program
+
+- For running the program using the command interface:
+```sh
+python main.py
+```
+- For running the program using the UI interface:
+```sh
+python main.py --ui
+```
+### How to use the graphic interface
+- Select the cell to edit
+- Insert on the top bar the content of the cell and `Enter`.
+
+## 2. Instructions to run the tests. `TestsRunner.py`
+
+1. Set the working directory to the `markerrun` directory. To be able of import all packages of the project correctly.
+
+```cd PythonProjectAutomaticMarkerForGroupsOf2/SpreadsheetMarkerForStudents/markerrun```
+
+```sh
+python TestsRunner.py
+```
+
+
+## 3. DCD Tree project
 
 ```
 Spreadsheet-ARQSOFT
@@ -30,12 +55,7 @@ Spreadsheet-ARQSOFT
 ├─ LICENSE
 ├─ README.md
 ├─ SpreadsheetController.py
-├─ Tests
-│  ├─ Domain Model.drawio.png
-│  ├─ __init__.py
-│  ├─ test_file.txt
-│  ├─ test_tokenizer.py
-│  └─ tests.py
+├─ main.py
 └─ requirements.txt
 
 ```

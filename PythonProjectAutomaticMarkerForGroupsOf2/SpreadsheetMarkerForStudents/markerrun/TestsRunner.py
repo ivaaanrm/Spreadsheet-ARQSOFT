@@ -3,7 +3,6 @@ import importlib
 
 import sys, os
 from pathlib import Path
-from rich import print
 sys.path.append(str(Path(__file__).parent.parent.parent.parent))
 sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent))

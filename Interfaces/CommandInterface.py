@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
+import shlex
 from typing import TYPE_CHECKING, List, Tuple 
 
 if TYPE_CHECKING:
@@ -30,17 +31,19 @@ class Menu:
         for key, value in self.__options.items():
             print(f"{key}: {value}")
 
-
-    def get_choice(self) -> Tuple[str,List[str]]:
+    def get_choice(self) -> Tuple[str, List[str]]:
         """Prompts the user to select a menu option."""
         self.display()
         user_input = input("Select an option: ").strip()
-        parts = user_input.split()
+        
+        # Use shlex.split to respect quoted substrings
+        parts = shlex.split(user_input)
+        
         choice = parts[0].upper()  # First part is the choice
         arguments = parts[1:] if len(parts) > 1 else []  # Remaining parts are arguments
+        
         if choice in self.__options:
             return choice, arguments
-
         else:
             print("Invalid choice. Please try again.")
             return self.get_choice()
