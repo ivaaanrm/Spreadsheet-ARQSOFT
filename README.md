@@ -1,5 +1,11 @@
 # Spreadsheet-ARQSOFT
 
+### Requirements
+```sh
+pip install -r requirements.txt
+````
+**Note**: The program uses the `pandas` package to show in terminal the Spreadsheet formatted in columns.
+
 ## 1. Instructions for running the program
 
 - For running the program using the command interface:
@@ -23,7 +29,6 @@ python main.py --ui
 ```sh
 python TestsRunner.py
 ```
-
 
 ## 3. DCD Tree project
 
